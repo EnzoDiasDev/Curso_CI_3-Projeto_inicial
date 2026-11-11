@@ -39,13 +39,22 @@ jobs:
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
+        debug: true
         script: |
+          set -x
           whoami
+          pwd
+          ls -l main templates assets
           export HOST=${{ secrets.DBHOST }}
           export USER=${{ secrets.DBUSER }}
           export PASSWORD=${{ secrets.DBPASSWORD }}
           export DBNAME=${{ secrets.DBNAME }}
           export DBPORT=${{ secrets.DBPORT }}
           export PORT=8000
+          echo "HOST=$HOST DBPORT=$DBPORT USER=$USER DBNAME=$DBNAME"
           chmod +x main
           nohup ./main > nohup.out 2> nohup.err < /dev/null &
+          sleep 5                                                      
+          echo "----- nohup.out -----"; tail -n 30 nohup.out           
+          echo "----- nohup.err -----"; tail -n 30 nohup.err           
+          pgrep -af '\./main' || echo "API NAO ESTA RODANDO"
