@@ -42,4 +42,4 @@ jobs:
     # Push is a shorthand for --output=type=registry
         push: true
     # List of tags
-        tags: enzodias31/go_ci3:${{github.ref_name}}
+        tags: enzodias31/go_ci3:${{ github.run_number }}
